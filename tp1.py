@@ -32,14 +32,18 @@ def funcionObjetivo(a):
 
 def calculaSPM():
     suma=0
-    max=lista_funcion_obj[0]
+    maxi=lista_funcion_obj[0]
+    mini=lista_funcion_obj[0]
     for x in range(cantidad_pi):
         suma+=lista_funcion_obj[x]
-        if (lista_funcion_obj[x]>= max):
-         max=lista_funcion_obj[x]
+        if (lista_funcion_obj[x]>= maxi):
+            maxi=lista_funcion_obj[x]
+        if (lista_funcion_obj[x]<= mini):
+            mini=lista_funcion_obj[x]
     lista_funcion_obj[cantidad_pi]=suma
-    lista_funcion_obj[cantidad_pi+1]=max
+    lista_funcion_obj[cantidad_pi+1]=maxi
     lista_funcion_obj[cantidad_pi+2]= (suma/cantidad_pi)
+    lista_funcion_obj[cantidad_pi+3]= mini
 
 #calculo el fitness de cada cromosoma 
 def calcular_fitness(suma,maxi,mini):
@@ -67,7 +71,7 @@ print("\nPOBLACION INICIAL EL DECIMALES")
 for x in range(10):
     print(cromosomas_decimal[x])
 #crear valores funcion objetivo (le agrego 3 lugares mas para guardar max, suma y promedio)
-crearLista((cantidad_pi+3),lista_funcion_obj)
+crearLista((cantidad_pi+4),lista_funcion_obj)
 #valores funcion objetivo
 for x in range(cantidad_pi):
     lista_funcion_obj[x]= funcionObjetivo(cromosomas_decimal[x])
@@ -76,9 +80,10 @@ for x in range(cantidad_pi):
 calculaSPM()
 suma= lista_funcion_obj[10]
 maxi= lista_funcion_obj[11]
-mini = lista_funcion_obj[12]
+prom = lista_funcion_obj[12]
+mini= lista_funcion_obj[13]
 #calcular fitness
-calcular_fitness(suma,maxi,mini)
+calcular_fitness(suma,maxi,prom)
 #mostrar funcion objetivo
 print('\nFUNCION OBJETIVO')
 for i in range (10):
@@ -97,10 +102,16 @@ print('MAXIMO:', end=" ")
 print(maxi)
 print('MINIMO:', end=" ") 
 print(mini)
+print('PROMEDIO:', end=" ") 
+print(prom)
+
 print('\nFITNESS')
 for i in range (len(fitness)):
     print(fitness[i])
-
+sumafitnees=0
+for i in range (len(fitness)):
+    sumafitnees+=fitness[i]
+print (sumafitnees)
 """import random
 import collections
 import statistics
