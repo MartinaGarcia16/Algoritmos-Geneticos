@@ -1,4 +1,5 @@
 from random import randint
+from random import random
 
 n=0
 cantidad_pi=10
@@ -11,8 +12,11 @@ lista_porcentajes=[]
 fitness=[]
 prob_cross=0.75
 prob_mut=0.05
-
-
+padres=[]
+probabilidades=[]
+cromosomas_hijo=[]
+punto_corte = 1
+hijos=[]
 def crearPoblacionBinario():
  for x in range(cantidad_pi):
     cromosomas_binario.append([])
@@ -58,7 +62,8 @@ def calcular_fitness(suma,maxi,mini):
         x= (lista_funcion_obj[i]/suma)
         fitness[i] = x
 
-def porcentajes(acum,lista_porcentajes):
+def porcentajes(lista_porcentajes):
+    acum=0
     for i in range(10):
         porc= fitness[i]*100
         for j in range(round(porc)):
@@ -66,8 +71,103 @@ def porcentajes(acum,lista_porcentajes):
             acum+=1
             if(acum==100):
                 break
+    return acum
+
+def seleccionar_padres(acum,padres):
+    for i in range(cantidad_pi):
+        x= randint(0,acum)
+        padres[i]=lista_porcentajes[x]
+
+def hacer_crossover():
+    #crearLista(cantidad_genes,cromosomas_hijo)
+    padre1=[]
+    padre2=[]
+    for i in range (0,int(len(cromosomas_decimal)/2)):
+        x= randint(0,acum)
+        cromosoma_nuevo_1=cromosomas_binario[lista_porcentajes[x]]
+        y=randint(0,acum)
+        cromosoma_nuevo_2=cromosomas_binario[lista_porcentajes[y]]
+        print('padre1')
+        print(cromosoma_nuevo_1)
+        print('padre2')
+        print(cromosoma_nuevo_2)
+        '''for x in range(cantidad_pi):
+        cromosomas_hijo.append([])
+        for j in range(cantidad_genes):
+        #n=randint(0,1)
+        #cromosomas_binario[x].append(n) 
+        #i=0  0 y 1 ( i+i, i+i+1)
+        #i=1  2 y 3 ( i+i, i+i+1)
+        padres[i+i]
+        padres[i+i+1]'''
+        if (random() <= prob_cross): 
+            aux=[]
+            crearLista(30,aux)            
+            for x in range (0,len(padre2)):
+                aux[x] = cromosoma_nuevo_2[x]
+            for x in range (punto_corte,len(padre2)):  #crossover desde el punto corte hasta fin
+                cromosoma_nuevo_2[x] = padrcromosoma_nuevo_1[x]
+                cromosoma_nuevo_1[x] = aux[x]
+            print('hijo1')
+            print(cromosoma_nuevo_1)
+            print('hijo2')
+            print(cromosoma_nuevo_2)
+            
+        if (random() <= prob_mut):
+            x=randint(0,29)
+            valor1=cromosoma_nuevo_1[x] #busco el valor 1 o 0 en esa posicion
+            if (valor1==1):
+                cromosoma_nuevo_1[x]==0
+            else:
+                cromosoma_nuevo_1[x]==1
+
+        if (random() <= prob_mut):
+            y=randint(0,29)
+            valor2=cromosoma_nuevo_2[y]
+            if(valor2==1):
+                cromosoma_nuevo_2[y]==0
+            else:
+                cromosoma_nuevo_2==1
+
+        hijos.append(cromosoma_nuevo_1)
+        hijos.append(cromosoma_nuevo_2)       
 
 
+
+
+'''def crossover (poblacion):
+    ruleta = crearRuleta(poblacion)
+    hijos = []
+    for _ in range (0,int(len(poblacion)/2)):
+        cromosoma1_bin = random.choice(ruleta)   #Elige 2 cromosomas al azar de la ruleta
+        cromosoma2_bin = random.choice(ruleta)
+                
+        if (random.random() <= prob_crossover): 
+            puntoCorte = (np.random.randint(1, len(cromosoma1_bin)))   
+
+            aux = np.random.randint(2, size=30)   #hay que inicializarlo asi y copiar de a 1 bit porque sino da error            
+            for x in range (0,len(cromosoma2_bin)):
+                aux[x] = cromosoma2_bin[x]
+
+            for x in range (puntoCorte,len(cromosoma2_bin)):  #crossover desde el punto corte hasta fin
+                cromosoma2_bin[x] = cromosoma1_bin[x]
+                cromosoma1_bin[x] = aux[x]
+        
+        if (random.random() <= prob_mutacion): cromosoma1_bin = mutar(cromosoma1_bin)  #mutación
+        if (random.random() <= prob_mutacion): cromosoma2_bin = mutar(cromosoma2_bin)
+       
+        hijos.extend([Cromosoma(cromosoma1_bin),Cromosoma(cromosoma2_bin)])
+    return hijos
+    
+    def mutar (cromosoma_bin):
+    aux = np.random.randint(2, size=30)      #sin inicializar aux asi da error
+    for x in range (len(cromosoma_bin)):
+        aux[x]=cromosoma_bin[x]
+    
+    gen = np.random.randint(0,len(aux)-1)
+    aux[gen]=abs(cromosoma_bin[gen]-1)
+    return aux
+    '''
 #main
 #creando y cargando la matriz de cromosomas (poblacion inicial)
 crearPoblacionBinario()
@@ -103,10 +203,27 @@ prom = lista_funcion_obj[13]
 mini= lista_funcion_obj[14]
 
 #calcular fitness
-acum=0
+
 calcular_fitness(suma,maxi,prom)
 crearLista(100,lista_porcentajes)
-porcentajes(acum,lista_porcentajes)
+acum= porcentajes(lista_porcentajes)
+#crearLista(cantidad_pi,padres)
+#seleccionar_padres(acum,padres)
+#crearLista(100, probabilidades)
+hacer_crossover()
+'''for i in range(5):
+    for k in range(75):
+        probabilidades[k]= 1
+        for j in range(25):
+            probabilidades[j+75]=0
+        x=randint(0,100)
+        if (probabilidades[x]==1):
+            hacer_crossover(probabilidades, padres, i)'''
+        
+
+
+
+
 #mostrar funcion objetivo
 print('\nFUNCION OBJETIVO')
 for i in range (10):
@@ -141,14 +258,16 @@ print (sumafitnees)
 print(lista_porcentajes)
 print(len(lista_porcentajes))
 print(acum)
-
-
+print(padres)
+#print(probabilidades)
+print('\nPOBLACION HIJOS')
+for i in range (len(hijos)):
+    print(hijos[i])
 
 """import random
 import collections
 import statistics
 import numpy
-
 coef = (2 ** 30) - 1
 ciclos = 1
 pc = 0.75
@@ -156,16 +275,11 @@ pm = 0.05
 cromosomas = []
 decimales = []
 fitness = []
-
-
 # cant_individuos=10
-
 def crear_pob_inicial(cant_individuos):
     for i in range(0, cant_individuos):
         binario = numpy.random.randint(2, size=30)
         cromosomas.append(binario)
-
-
 def convertir_decimal():
     for i in range(0, 10):
         suma = 0
@@ -174,12 +288,8 @@ def convertir_decimal():
                 suma = suma + pow(2, coef - j)
         decimales.append(suma)
     print(cromosomas)
-
-
 def funcion_obj(x):
     return (x / (2 ** 30) - 1)
-
-
 crear_pob_inicial(10)
 for i in range(0, ciclos):
     convertir_decimal()
@@ -196,7 +306,6 @@ for i in range(0, ciclos):
     minimo_fitness = min(fitness)
 print(decimales)
 print(fitness)
-
 sacar maximo
 maximo=-1
     for arg in args:
@@ -204,4 +313,3 @@ maximo=-1
             maximo = arg
     return maximo 
 def maximo_arbitrario(*args) -> float:"""
-
