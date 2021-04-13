@@ -1,11 +1,16 @@
 from random import randint
+
 n=0
 cantidad_pi=10
 cantidad_genes=30
+cantidad_ciclos=20
 cromosomas_binario=[]
 cromosomas_decimal=[]
 lista_funcion_obj=[]
+lista_porcentajes=[]
 fitness=[]
+prob_cross=0.75
+prob_mut=0.05
 
 
 def crearPoblacionBinario():
@@ -38,18 +43,30 @@ def calculaSPM():
         suma+=lista_funcion_obj[x]
         if (lista_funcion_obj[x]>= maxi):
             maxi=lista_funcion_obj[x]
+            nro_max=cromosomas_decimal[x] #el nro decimal que me genera el valor de f. objt. mas grande lo guardo en nro_max
         if (lista_funcion_obj[x]<= mini):
             mini=lista_funcion_obj[x]
     lista_funcion_obj[cantidad_pi]=suma
     lista_funcion_obj[cantidad_pi+1]=maxi
-    lista_funcion_obj[cantidad_pi+2]= (suma/cantidad_pi)
-    lista_funcion_obj[cantidad_pi+3]= mini
+    lista_funcion_obj[cantidad_pi+2]=nro_max
+    lista_funcion_obj[cantidad_pi+3]= (suma/cantidad_pi)
+    lista_funcion_obj[cantidad_pi+4]= mini
 
 #calculo el fitness de cada cromosoma 
 def calcular_fitness(suma,maxi,mini):
     for i in range(10):
         x= (lista_funcion_obj[i]/suma)
         fitness[i] = x
+
+def porcentajes(acum,lista_porcentajes):
+    for i in range(10):
+        porc= fitness[i]*100
+        for j in range(round(porc)):
+            lista_porcentajes[acum] = i
+            acum+=1
+            if(acum==100):
+                break
+
 
 #main
 #creando y cargando la matriz de cromosomas (poblacion inicial)
@@ -71,19 +88,25 @@ print("\nPOBLACION INICIAL EL DECIMALES")
 for x in range(10):
     print(cromosomas_decimal[x])
 #crear valores funcion objetivo (le agrego 3 lugares mas para guardar max, suma y promedio)
-crearLista((cantidad_pi+4),lista_funcion_obj)
+crearLista((cantidad_pi+5),lista_funcion_obj)
 #valores funcion objetivo
 for x in range(cantidad_pi):
     lista_funcion_obj[x]= funcionObjetivo(cromosomas_decimal[x])
 
-#calcular suma promedio maximo
+#calcular suma promedio maximo minimo 
+nro_max=0
 calculaSPM()
 suma= lista_funcion_obj[10]
 maxi= lista_funcion_obj[11]
-prom = lista_funcion_obj[12]
-mini= lista_funcion_obj[13]
+nro_max= lista_funcion_obj[12]
+prom = lista_funcion_obj[13]
+mini= lista_funcion_obj[14]
+
 #calcular fitness
+acum=0
 calcular_fitness(suma,maxi,prom)
+crearLista(100,lista_porcentajes)
+porcentajes(acum,lista_porcentajes)
 #mostrar funcion objetivo
 print('\nFUNCION OBJETIVO')
 for i in range (10):
@@ -100,6 +123,8 @@ print('\nSUMA:', end=" ")
 print(suma)
 print('MAXIMO:', end=" ") 
 print(maxi)
+print('Cromosoma que genera el valor máximo:', end=" ") 
+print(nro_max)
 print('MINIMO:', end=" ") 
 print(mini)
 print('PROMEDIO:', end=" ") 
@@ -112,6 +137,13 @@ sumafitnees=0
 for i in range (len(fitness)):
     sumafitnees+=fitness[i]
 print (sumafitnees)
+
+print(lista_porcentajes)
+print(len(lista_porcentajes))
+print(acum)
+
+
+
 """import random
 import collections
 import statistics
@@ -172,3 +204,4 @@ maximo=-1
             maximo = arg
     return maximo 
 def maximo_arbitrario(*args) -> float:"""
+
