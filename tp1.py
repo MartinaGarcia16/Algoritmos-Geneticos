@@ -98,7 +98,7 @@ def hacer_crossover():
             for x in range (0,len(padre2)):
                 aux[x] = cromosoma_nuevo_2[x]
             for x in range (punto_corte,len(padre2)):  #crossover desde el punto corte hasta fin
-                cromosoma_nuevo_2[x] = padrcromosoma_nuevo_1[x]
+                cromosoma_nuevo_2[x] = cromosoma_nuevo_1[x]
                 cromosoma_nuevo_1[x] = aux[x]
             print('hijo1')
             print(cromosoma_nuevo_1)
@@ -181,14 +181,7 @@ hacer_crossover()
 print('\nFUNCION OBJETIVO')
 for i in range (10):
     print(lista_funcion_obj[i])
-'''for x in range(13):
-    if x==10:
-        print("suma")
-    if x==11:
-        print("maximo")
-    if x==12:
-        print("promedio")
-    print(lista_funcion_obj[x])'''
+
 print('\nSUMA:', end=" ") 
 print(suma)
 print('MAXIMO:', end=" ") 
@@ -208,14 +201,21 @@ for i in range (len(fitness)):
     sumafitnees+=fitness[i]
 print (sumafitnees)
 
+print('\nPOOL GENERADO:')
 print(lista_porcentajes)
-print(len(lista_porcentajes))
+#print(len(lista_porcentajes))
+print('ACUMULADOR DEL POOL: ', end=" ")
 print(acum)
-print(padres)
+#print(padres)
 #print(probabilidades)
 print('\nPOBLACION HIJOS')
 for i in range (len(hijos)):
     print(hijos[i])
+
+
+
+
+
 
 """import random
 import collections
