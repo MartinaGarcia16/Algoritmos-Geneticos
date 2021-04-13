@@ -16,7 +16,7 @@ padres=[]
 probabilidades=[]
 cromosomas_hijo=[]
 punto_corte = 1
-hijos=[]
+hijos=[] #tiene la nueva poblacion, con crossover o con mutación
 def crearPoblacionBinario():
  for x in range(cantidad_pi):
     cromosomas_binario.append([])
@@ -91,15 +91,7 @@ def hacer_crossover():
         print(cromosoma_nuevo_1)
         print('padre2')
         print(cromosoma_nuevo_2)
-        '''for x in range(cantidad_pi):
-        cromosomas_hijo.append([])
-        for j in range(cantidad_genes):
-        #n=randint(0,1)
-        #cromosomas_binario[x].append(n) 
-        #i=0  0 y 1 ( i+i, i+i+1)
-        #i=1  2 y 3 ( i+i, i+i+1)
-        padres[i+i]
-        padres[i+i+1]'''
+        
         if (random() <= prob_cross): 
             aux=[]
             crearLista(30,aux)            
@@ -130,45 +122,10 @@ def hacer_crossover():
                 cromosoma_nuevo_2==1
 
         hijos.append(cromosoma_nuevo_1)
-        hijos.append(cromosoma_nuevo_2)       
+        hijos.append(cromosoma_nuevo_2)              
 
 
-
-
-'''def crossover (poblacion):
-    ruleta = crearRuleta(poblacion)
-    hijos = []
-    for _ in range (0,int(len(poblacion)/2)):
-        cromosoma1_bin = random.choice(ruleta)   #Elige 2 cromosomas al azar de la ruleta
-        cromosoma2_bin = random.choice(ruleta)
-                
-        if (random.random() <= prob_crossover): 
-            puntoCorte = (np.random.randint(1, len(cromosoma1_bin)))   
-
-            aux = np.random.randint(2, size=30)   #hay que inicializarlo asi y copiar de a 1 bit porque sino da error            
-            for x in range (0,len(cromosoma2_bin)):
-                aux[x] = cromosoma2_bin[x]
-
-            for x in range (puntoCorte,len(cromosoma2_bin)):  #crossover desde el punto corte hasta fin
-                cromosoma2_bin[x] = cromosoma1_bin[x]
-                cromosoma1_bin[x] = aux[x]
-        
-        if (random.random() <= prob_mutacion): cromosoma1_bin = mutar(cromosoma1_bin)  #mutación
-        if (random.random() <= prob_mutacion): cromosoma2_bin = mutar(cromosoma2_bin)
-       
-        hijos.extend([Cromosoma(cromosoma1_bin),Cromosoma(cromosoma2_bin)])
-    return hijos
-    
-    def mutar (cromosoma_bin):
-    aux = np.random.randint(2, size=30)      #sin inicializar aux asi da error
-    for x in range (len(cromosoma_bin)):
-        aux[x]=cromosoma_bin[x]
-    
-    gen = np.random.randint(0,len(aux)-1)
-    aux[gen]=abs(cromosoma_bin[gen]-1)
-    return aux
-    '''
-#main
+#MAIN
 #creando y cargando la matriz de cromosomas (poblacion inicial)
 crearPoblacionBinario()
 #mostrando las matriz binaria
@@ -220,10 +177,6 @@ hacer_crossover()
         if (probabilidades[x]==1):
             hacer_crossover(probabilidades, padres, i)'''
         
-
-
-
-
 #mostrar funcion objetivo
 print('\nFUNCION OBJETIVO')
 for i in range (10):
