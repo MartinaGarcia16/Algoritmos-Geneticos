@@ -129,6 +129,7 @@ def hacer_crossover():
 
 def generar_pob_elite():
     fitness_elite=sorted(fitness,reverse=True)
+    #test
     mejor1=fitness_elite[0]
     mejor2=fitness_elite[1]
     for i in range(len(fitness)):
