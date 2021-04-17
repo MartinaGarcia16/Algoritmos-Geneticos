@@ -17,6 +17,11 @@ probabilidades=[]
 cromosomas_hijo=[]
 punto_corte = 1
 hijos=[] #tiene la nueva poblacion, con crossover o con mutación
+poblacion_elite=[]
+fitness_elite=[]
+hijos_elite=[]
+
+
 def crearPoblacionBinario():
  for x in range(cantidad_pi):
     cromosomas_binario.append([])
@@ -73,11 +78,6 @@ def porcentajes(lista_porcentajes):
                 break
     return acum
 
-def seleccionar_padres(acum,padres):
-    for i in range(cantidad_pi):
-        x= randint(0,acum)
-        padres[i]=lista_porcentajes[x]
-
 def hacer_crossover():
     #crearLista(cantidad_genes,cromosomas_hijo)
     padre1=[]
@@ -124,6 +124,63 @@ def hacer_crossover():
         hijos.append(cromosoma_nuevo_1)
         hijos.append(cromosoma_nuevo_2)              
 
+def generar_pob_elite():
+    fitness_elite=sorted(fitness,reverse=True)
+    mejor1=fitness_elite[0]
+    mejor2=fitness_elite[1]
+    for i in range(len(fitness)):
+        if (fitness[i]==mejor1):
+            hijos_elite[0]=cromosomas_binario[i]
+        elif (fitness[i]==mejor2):
+            hijos_elite[1]=cromosomas_binario[i]
+    print('padre elite 1')
+    print(hijos_elite[0])
+    print ('padre elite 2')
+    print(hijos_elite[1])
+
+    #elijo solo 8 porque dos son los padres (int(len(cromosomas_decimal)/2)-2)
+    for i in range (0,8):
+        x= randint(0,acum)
+        cromosoma_nuevo_1=cromosomas_binario[lista_porcentajes[x]]
+        y=randint(0,acum)
+        cromosoma_nuevo_2=cromosomas_binario[lista_porcentajes[y]]
+        '''print('padre1')
+        print(cromosoma_nuevo_1)
+        print('padre2')
+        print(cromosoma_nuevo_2)'''
+        
+        if (random() <= prob_cross): 
+            aux=[]
+            crearLista(30,aux)            
+            for x in range (30):
+                aux[x] = cromosoma_nuevo_2[x]
+            for x in range (punto_corte,29):  #crossover desde el punto corte hasta fin
+                cromosoma_nuevo_2[x] = cromosoma_nuevo_1[x]
+                cromosoma_nuevo_1[x] = aux[x]
+            print('hijo1')
+            print(cromosoma_nuevo_1)
+            print('hijo2')
+            print(cromosoma_nuevo_2)
+            
+        if (random() <= prob_mut):
+            x=randint(0,29)
+            valor1=cromosoma_nuevo_1[x] #busco el valor 1 o 0 en esa posicion
+            if (valor1==1):
+                cromosoma_nuevo_1[x]==0
+            else:
+                cromosoma_nuevo_1[x]==1
+
+        if (random() <= prob_mut):
+            y=randint(0,29)
+            valor2=cromosoma_nuevo_2[y]
+            if(valor2==1):
+                cromosoma_nuevo_2[y]==0
+            else:
+                cromosoma_nuevo_2==1
+        hijos_elite[i+2]=cromosoma_nuevo_1
+        hijos_elite[i+2]=cromosoma_nuevo_2  
+      
+
 
 #MAIN
 #creando y cargando la matriz de cromosomas (poblacion inicial)
@@ -164,19 +221,17 @@ mini= lista_funcion_obj[14]
 calcular_fitness(suma,maxi,prom)
 crearLista(100,lista_porcentajes)
 acum= porcentajes(lista_porcentajes)
-#crearLista(cantidad_pi,padres)
+
 #seleccionar_padres(acum,padres)
 #crearLista(100, probabilidades)
 hacer_crossover()
-'''for i in range(5):
-    for k in range(75):
-        probabilidades[k]= 1
-        for j in range(25):
-            probabilidades[j+75]=0
-        x=randint(0,100)
-        if (probabilidades[x]==1):
-            hacer_crossover(probabilidades, padres, i)'''
-        
+
+#ELITISMO 
+crearLista(cantidad_pi,padres)
+crearLista(cantidad_pi,fitness_elite)
+#crearLista(cantidad_pi, poblacion_elite)
+crearLista(cantidad_pi,hijos_elite) 
+generar_pob_elite()
 #mostrar funcion objetivo
 print('\nFUNCION OBJETIVO')
 for i in range (10):
@@ -212,6 +267,10 @@ print('\nPOBLACION HIJOS')
 for i in range (len(hijos)):
     print(hijos[i])
 
+
+print('\nPOBLACION HIJOS ELITE')
+for i in range (len(hijos_elite)):
+    print(hijos_elite[i])
 
 
 
