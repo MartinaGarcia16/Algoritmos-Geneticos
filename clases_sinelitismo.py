@@ -81,15 +81,18 @@ def crossover (poblacion):
         padre_1 = random.choice(ruleta)   
         padre_2 = random.choice(ruleta)
                 
-        if (random.random() <= prob_crossover): 
-               
-            aux = [0]*30               
+        if (random.random() <= prob_crossover):
+            puntoCorte = (np.random.randint(1, 30))
+
+            aux= [0]*30  
+
             for x in range (0,len(padre_2)):
                 aux[x] = padre_2[x]
-        
-            for x in range (puntoCorte,len(padre_2)):  
+
+            for x in range (puntoCorte,len(padre_2)): 
                 padre_2[x] = padre_1[x]
-                padre_1[x] = aux[x]
+                padre_1[x] = aux[x] 
+
         #-------------MUTACION----------------------
         if (random.random() <= prob_mutacion): 
             padre_1 = hacerMutacion(padre_1)  
@@ -161,7 +164,6 @@ def generarGrafico (tabla):
 cantPoblacionInicial=10
 prob_crossover=0.75
 prob_mutacion=0.05
-puntoCorte=1
 ciclos=199
 #programa principal
 poblacion = crearPoblacionInicial(cantPoblacionInicial)
