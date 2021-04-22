@@ -55,7 +55,7 @@ def convertirDecimal (binario):
 def calcularFuncionObjetivo (decimal):
     return ((decimal/((2**30)-1))**2)
 
-# Crea y retorna la poblacion inicial
+# Crea la poblacion inicial
 def crearPoblacionInicial (cantPoblacionInicial):
     for _ in range (0,cantPoblacionInicial):
         binario = np.random.randint(2, size=30)
@@ -86,7 +86,7 @@ def crossover (poblacion):
         if (random.random() <= prob_crossover):
             puntoCorte = (np.random.randint(1, 30))
 
-            aux= [0]*30  
+            aux= np.random.randint(2, size=30)  
 
             for x in range (0,len(padre_2)):
                 aux[x] = padre_2[x]
@@ -118,7 +118,7 @@ def crossoverelite (poblacion):
         if (random.random() <= prob_crossover):
             puntoCorte = (np.random.randint(1, 30))
 
-            aux= [0]*30  
+            aux= np.random.randint(2, size=30)  
 
             for x in range (0,len(padre_2)):
                 aux[x] = padre_2[x]
@@ -148,7 +148,7 @@ def crossoverRango (poblacion):
     if (random.random() <= prob_crossover):
         puntoCorte = (np.random.randint(1, 30))
 
-        aux= [0]*30  
+        aux= np.random.randint(2, size=30)  
 
         for x in range (0,len(padre_2)):
             aux[x] = padre_2[x]
@@ -165,6 +165,7 @@ def crossoverRango (poblacion):
     hijos.extend([Cromosoma(padre_1),Cromosoma(padre_2)])
     return hijos
 
+#crea una lista de cromosomas con los padres elejidos en seleccion rango
 def crearRango(poblacion):
     rango=[]
     poblacion = sorted(poblacion, key = lambda x : x.fitness, reverse=True)
@@ -182,7 +183,7 @@ def crearRuleta(poblacion):
     return ruleta
 # cambia un bit aleatorio del cromosoma por el opuesto 
 def hacerMutacion (padre):
-    aux = [0]*30      
+    aux = np.random.randint(2, size=30)      
     for x in range (len(padre)):
         aux[x]=padre[x]
     posicion = np.random.randint(0,len(aux)-1)
@@ -209,10 +210,8 @@ def agregarTabla (poblacion):
     
     return lineaTabla
     
-# Imprime una tabla con el maximo funcionObjetivo, minimo funcionObjetivo, y promedio de todos los 
-# valores para cada generacion
+#genera el grafico
 def generarGrafico (prom,maxim,minim,titulo,l1,l2,l3):
-    #x1=range(1,(corridas+1))
     plt.plot(prom,'g', label = l1)
     plt.plot(maxim,'r',  label = l2)
     plt.plot(minim,'m' ,label = l3)
@@ -222,16 +221,14 @@ def generarGrafico (prom,maxim,minim,titulo,l1,l2,l3):
     plt.xlabel("Generacion")
     plt.ylabel("Funcion Objetivo")
     plt.show()
+#guardamos en el excel maximos, minimos, etc de las poblaciones
 def guardar_excel():
-
-
     lista_excel = []
     lista_excel.append(list(range(1,ciclos+2)))
     lista_excel.append(promedios)
     lista_excel.append(maximos)
     lista_excel.append(minimos)
     lista_excel.append(lista_cromosomas_maximo)
-    #lista_excel.append(lista_cromosomas_maximo_bin)
     lista_excel.append(promedios_elite)
     lista_excel.append(maximos_elite)
     lista_excel.append(minimos_elite)
@@ -246,8 +243,8 @@ def guardar_excel():
     with pd.ExcelWriter(ruta) as writer:
         df.to_excel(writer, sheet_name='TP 1', index=False)   
     print(df)
-#variables
 
+#variables
 cantPoblacionInicial=10
 prob_crossover=0.75
 prob_mutacion=0.05
@@ -268,10 +265,8 @@ poblacion=[]
 poblacionElite=[]
 poblacionRango=[]
 ruta= "C:\\Users\\Sergi\\Documents\\algoritmos geneticos\\tp1.xlsx"
+
 #programa principal
-#poblacion = crearPoblacionInicial(cantPoblacionInicial)
-#poblacionElite= crearPoblacionInicial(cantPoblacionInicial)
-#poblacionRango= crearPoblacionInicial(cantPoblacionInicial)
 crearPoblacionInicial(cantPoblacionInicial)
 tabla=[]
 tablaelite=[]
@@ -279,11 +274,8 @@ tablarango=[]
 tabla.extend([agregarTabla(poblacion)])
 tablaelite.extend([agregarTabla(poblacionElite)])
 tablarango.extend([agregarTabla(poblacionRango)])
-#print("N°                      Cromosoma binario                       cromosoma decimal    maximoFO            minimoFO                promedioFO")
-#print("1  ",tabla[0].getCromosomaBinarioMaximo()," ",tabla[0].getCromosomaDecimalMaximo()," ",tabla[0].getMaximo(), " ", tabla[0].getMinimo(), " ", tabla[0].getPromedio())
 
 for x in range (0,ciclos):
-
     calcularFitnessyposiciones(poblacion)
     calcularFitnessyposiciones(poblacionElite)
     calcularFitnessyposiciones(poblacionRango)
@@ -293,7 +285,6 @@ for x in range (0,ciclos):
     tabla.extend([agregarTabla(poblacion)])
     tablaelite.extend([agregarTabla(poblacionElite)])
     tablarango.extend([agregarTabla(poblacionRango)])
-    #print(x+2,'  ',tabla[x+1].getCromosomaBinarioMaximo()," ",tabla[x+1].getCromosomaDecimalMaximo()," ", tabla[x+1].getMaximo(), " ", tabla[x+1].getMinimo(), " ", tabla[x+1].getPromedio())
    
 
 for i in range(0, len(tabla)):
@@ -301,7 +292,7 @@ for i in range(0, len(tabla)):
     maximos.append(tabla[i].getMaximo())
     minimos.append(tabla[i].getMinimo())
     lista_cromosomas_maximo.append(tabla[i].getCromosomaBinarioMaximo())
-    promedios_elite.append(tablaelite[i].getMinimo())
+    promedios_elite.append(tablaelite[i].getPromedio())
     maximos_elite.append(tablaelite[i].getMaximo())
     minimos_elite.append(tablaelite[i].getMinimo())
     lista_crom_max_elite.append(tablaelite[i].getCromosomaBinarioMaximo())
