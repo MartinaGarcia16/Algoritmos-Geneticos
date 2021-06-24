@@ -8,7 +8,7 @@ class Objeto():
         return self.volumen
     def getValor(self):
         return self.valor
-
+#no recuerdo como era la funcion creo que era asi, no encuentro el powerpoint de la profe
 def calcularFuncion(volumen,valor):
     return valor/volumen
 #armar la lista con los objetos
